@@ -1,0 +1,24 @@
+version: "3"
+services:
+  nginx:
+    image: nginx:stable-alpine
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    
+  chat-app:
+    build: .
+    depends_on:
+      - mongo
+    env_file:
+      - ./.env
+
+  mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=robel
+      - MONGO_INITDB_ROOT_PASSWORD=2002
+    volumes:
+      - mongo-db:/data/db
+
+volumes:
+  mongo-db:
